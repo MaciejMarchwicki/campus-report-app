@@ -1,0 +1,11 @@
+project url
+
+https://soktybwssavqcqpqxsar.supabase.co
+
+anonkey
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNva3R5Yndzc2F2cWNxcHF4c2FyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MzE4NjMsImV4cCI6MjA5NjUwNzg2M30.4HUKudK2siCTwqJxWGBIW9YvAj-du-kVHg4EFt3kDCI
+
+bucket
+
+report_images
