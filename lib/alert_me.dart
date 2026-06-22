@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'app_language.dart';
 
 // ------------------------------------------------------------
@@ -201,6 +201,8 @@ class _AlertMePageState extends State<AlertMePage> {
     try {
       final imagePath = await _uploadImageIfSelected();
       final locationLabel = _buildLocationLabel();
+      final storage = const FlutterSecureStorage();
+      final userEmail = await storage.read(key: 'user_email');
 
       await Supabase.instance.client.from('reports').insert({
         'description': descriptionController.text.trim(),
@@ -210,7 +212,8 @@ class _AlertMePageState extends State<AlertMePage> {
         'longitude': selectedCoordinates?.longitude,
         'image_path': imagePath,
         'status': null,
-      });
+        'reporter_email': userEmail ?? '',
+});
 
       if (!mounted) return;
 
