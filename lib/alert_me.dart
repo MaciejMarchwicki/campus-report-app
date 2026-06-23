@@ -654,7 +654,7 @@ class _AlertMePageState extends State<AlertMePage> {
                             ? tr(_language, 'Sending...', 'Wysyłanie...')
                             : tr(
                                 _language,
-                                'Send Alert',
+                                'Send Report',
                                 'Wyślij zgłoszenie',
                               ),
                         style: const TextStyle(
