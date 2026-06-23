@@ -448,7 +448,9 @@ class _HomePageState extends State<HomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const CampusMapPage(),
+        builder: (context) => CampusMapPage(
+          language: _language,
+          ), // You can pass the current language here if needed
       ),
     );
   }
@@ -588,7 +590,7 @@ class _HomePageState extends State<HomePage> {
               ],
               _NavigationButton(
                 icon: Icons.add_alert_outlined,
-                label: tr(_language, 'Create report', 'Utwórz zgłoszenie'),
+                label: tr(_language, 'Create a report', 'Utwórz zgłoszenie'),
                 onPressed: _openAlertPage,
               ),
               _NavigationButton(
@@ -621,82 +623,16 @@ class _HomePageState extends State<HomePage> {
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.all(30),
+          padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Clickable report card in the middle of the home page.
-              InkWell(
+              _CreateReportButton(
+                language: _language,
                 onTap: _openAlertPage,
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  width: double.infinity,
-                  constraints: const BoxConstraints(
-                    minHeight: 230,
-                  ),
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: const [
-                      BoxShadow(
-                        blurRadius: 10,
-                        color: Colors.black12,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.report_problem_outlined,
-                        size: 60,
-                        color: appPrimaryColor,
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        tr(_language, 'Report an Issue', 'Zgłoś problem'),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        tr(
-                          _language,
-                          'Tell us what happened and where.',
-                          'Powiedz nam, co się stało i gdzie.',
-                        ),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ),
-
-              const SizedBox(height: 20),
-
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.circle,
-                    size: 14,
-                    color: appPrimaryColor,
-                  ),
-                  SizedBox(width: 8),
-                  Icon(Icons.circle_outlined, size: 14),
-                  SizedBox(width: 8),
-                  Icon(Icons.circle_outlined, size: 14),
-                ],
-              ),
-
-              const SizedBox(height: 40),
+              const SizedBox(height: 28),
 
               Row(
                 children: [
@@ -748,6 +684,7 @@ class _HomePageState extends State<HomePage> {
                     child: isNarrow
                         ? _buildMainContent()
                         : Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               SizedBox(
                                 width: 220,
@@ -833,6 +770,111 @@ class _NavigationButton extends StatelessWidget {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
         ),
+      ),
+    );
+  }
+}
+
+class _CreateReportButton extends StatelessWidget {
+  const _CreateReportButton({
+    required this.language,
+    required this.onTap,
+  });
+
+  final AppLanguage language;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 650;
+
+        final double buttonWidth = isMobile
+            ? constraints.maxWidth.clamp(220.0, 280.0)
+            : double.infinity;
+
+        final double buttonHeight = isMobile ? buttonWidth : 220;
+
+        return InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(24),
+          child: Container(
+            width: buttonWidth,
+            height: buttonHeight,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: appCardColor,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: appBorderColor,
+              ),
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 10,
+                  color: Colors.black12,
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const _CreateReportIcon(size: 78),
+                const SizedBox(height: 18),
+                Text(
+                  tr(language, 'Create a report', 'Utwórz zgłoszenie'),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: isMobile ? 22 : 30,
+                    fontWeight: FontWeight.w800,
+                    color: appTextColor,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  tr(
+                    language,
+                    'Tell us what happened and where.',
+                    'Powiedz nam, co się stało i gdzie.',
+                  ),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: isMobile ? 14 : 16,
+                    color: appMutedTextColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+class _CreateReportIcon extends StatelessWidget {
+  const _CreateReportIcon({
+    required this.size,
+  });
+
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: appPrimaryColor,
+          width: 7,
+        ),
+        borderRadius: BorderRadius.circular(size * 0.22),
+      ),
+      child: Icon(
+        Icons.add_rounded,
+        color: appPrimaryColor,
+        size: size * 0.62,
       ),
     );
   }
