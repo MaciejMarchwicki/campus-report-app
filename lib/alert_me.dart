@@ -68,7 +68,7 @@ class _AlertMePageState extends State<AlertMePage> {
   bool isSaving = false;
 
   final List<String> buildings = [
- 'A1',
+    'A1',
     'A2',
     'A3',
     'A4',
@@ -146,7 +146,7 @@ class _AlertMePageState extends State<AlertMePage> {
     'C15',
     'C16',
     'C17',
-    'C18',
+    'C18'
   ];
 
   List<String> get filteredBuildings {
